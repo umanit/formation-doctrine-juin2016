@@ -1,8 +1,10 @@
 <?php
 
-require '../bootstrap.php'
+require '../bootstrap.php';
 
-// Code here
+$post = $entityManager->getRepository('Entity\Post')->find($_GET['id']);
+// $post = $entityManager->getRepository('Entity\Post')->findOneBy(array('id' => $_GET['id']));
+// $post = $entityManager->getRepository('Entity\Post')->findOneById($_GET['id']);
 
 ?>
 
@@ -66,12 +68,11 @@ require '../bootstrap.php'
                                 <div class="col-sm-push-2 col-sm-8">
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
-                                            <a href="#" class="pull-right">Link</a>
-                                            <h4>Title</h4>
-                                            Date
+                                            <h4><?php print $post->getSubject(); ?></h4>
+                                            <?php print $post->getDate()->format('d/m/Y H:i:s'); ?>
                                         </div>
                                         <div class="panel-body">
-                                            Content.
+                                            <?php print $post->getMessage(); ?>
                                         </div>
                                     </div>
                                 </div>
