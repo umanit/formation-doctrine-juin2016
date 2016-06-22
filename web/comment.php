@@ -1,5 +1,7 @@
 <?php
 
+require '../bootstrap.php'
+
 // Code here
 
 ?>

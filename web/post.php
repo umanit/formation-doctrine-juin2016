@@ -1,6 +1,8 @@
 <?php
 
-// Code here
+require '../bootstrap.php';
+
+$posts = $entityManager->getRepository('Entity\Post')->findBy(array(), array('date' => 'DESC'));
 
 ?>
 
@@ -78,36 +80,18 @@
 
                                 <!-- main col right -->
                                 <div class="col-sm-7">
+                                    <?php foreach($posts as $post): ?>
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             <a href="#" class="pull-right">Link</a>
-                                            <h4>Title</h4>
-                                            Date
+                                            <h4><?php print $post->getSubject(); ?></h4>
+                                            <?php print $post->getDate()->format('d/m/Y H:i:s'); ?>
                                         </div>
                                         <div class="panel-body">
-                                            Content.
+                                            <?php print $post->getMessage(); ?>
                                         </div>
                                     </div>
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <a href="#" class="pull-right">Link</a>
-                                            <h4>Title</h4>
-                                            Date
-                                        </div>
-                                        <div class="panel-body">
-                                            Content.
-                                        </div>
-                                    </div>
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <a href="#" class="pull-right">Link</a>
-                                            <h4>Title</h4>
-                                            Date
-                                        </div>
-                                        <div class="panel-body">
-                                            Content.
-                                        </div>
-                                    </div>
+                                    <?php endforeach; ?>
                                 </div>
                             </div><!--/row-->
                             <hr>
