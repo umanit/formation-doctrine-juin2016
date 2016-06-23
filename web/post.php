@@ -16,7 +16,11 @@ if (isset($_POST['title']) && isset($_POST['message'])) {
     $entityManager->flush($post); // Flush uniquement la nouvelle entité
 }
 
-$posts = $entityManager->getRepository('Entity\Post')->findBy(array(), array('date' => 'DESC'));
+if (isset($_GET['search-word'])) {
+    $posts = $entityManager->getRepository('Entity\Post')->getSubjectLike($_GET['search-word']);
+} else {
+    $posts = $entityManager->getRepository('Entity\Post')->findBy(array(), array('date' => 'DESC'));
+}
 
 ?>
 

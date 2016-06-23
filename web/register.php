@@ -2,6 +2,23 @@
 
 require '../bootstrap.php';
 
+use Entity\User;
+
+if (isset($_POST['register'])) {
+    $user = new User();
+    $user->setUsername($_POST['username']);
+    $user->setPassword($_POST['password']);
+    $user->setFirstname($_POST['firstname']);
+    $user->setLastname($_POST['lastname']);
+    $user->setBirthDate(new \DateTime($_POST['birthDate']));
+    $user->setDescription($_POST['description']);
+
+    $entityManager->persist($user);
+    $entityManager->flush($user);
+
+    header('Location:/post.php');
+}
+
 ?>
 
 
