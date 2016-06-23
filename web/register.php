@@ -6,7 +6,7 @@ use Entity\User;
 
 if (isset($_POST['register'])) {
     $user = new User();
-    $user->setUsername($_POST['username']);
+    $user->setEmail($_POST['email']);
     $user->setPassword($_POST['password']);
     $user->setFirstname($_POST['firstname']);
     $user->setLastname($_POST['lastname']);
@@ -81,7 +81,7 @@ if (isset($_POST['register'])) {
                                         <form class="form-horizontal" role="form" method="POST">
                                             <h4>Enregistrement</h4>
                                             <div class="form-group">
-                                                <input class="form-control" type="text" name="username" placeholder="Username" />
+                                                <input class="form-control" type="text" name="email" placeholder="email" />
                                             </div>
                                             <div class="form-group">
                                                 <input class="form-control" type="password" name="password" placeholder="password" />

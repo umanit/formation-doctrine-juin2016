@@ -16,9 +16,9 @@ class User
     private $id;
 
     /**
-     * @Column(name="username", type="string")
+     * @Column(name="email", type="string")
      */
-    private $username;
+    private $email;
 
     /**
      * @Column(name="password", type="string")
@@ -65,30 +65,6 @@ class User
     public function setId($id)
     {
         $this->id = $id;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of Username
-     *
-     * @return mixed
-     */
-    public function getUsername()
-    {
-        return $this->username;
-    }
-
-    /**
-     * Set the value of Username
-     *
-     * @param mixed $username
-     *
-     * @return self
-     */
-    public function setUsername($username)
-    {
-        $this->username = $username;
 
         return $this;
     }
@@ -209,6 +185,31 @@ class User
     public function setBirthDate($birthDate)
     {
         $this->birthDate = $birthDate;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of Email
+     *
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set the value of Email
+     *
+     * @param mixed $email
+     *
+     * @return self
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
 
         return $this;
     }
