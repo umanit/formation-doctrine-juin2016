@@ -2,9 +2,24 @@
 
 require '../bootstrap.php';
 
+use Entity\Comment;
+
 $post = $entityManager->getRepository('Entity\Post')->find($_GET['id']);
 // $post = $entityManager->getRepository('Entity\Post')->findOneBy(array('id' => $_GET['id']));
 // $post = $entityManager->getRepository('Entity\Post')->findOneById($_GET['id']);
+
+// Création d'un commentaire
+if (isset($_POST['message'])) {
+    $comment = new Comment();
+    $comment->setDate(new \DateTime());
+    $comment->setMessage($_POST['message']);
+
+    $entityManager->persist($comment);
+    $entityManager->flush($comment);
+}
+
+// Récupération de tous les commentaires
+$comments = $entityManager->getRepository('Entity\Comment')->findBy(array(), array('date' => 'ASC'));
 
 ?>
 
@@ -77,42 +92,20 @@ $post = $entityManager->getRepository('Entity\Post')->find($_GET['id']);
                                     </div>
                                 </div>
 
+                                <?php foreach ($comments as $comment): ?>
                                 <div class="col-sm-push-2 col-sm-8">
                                     <div class="panel panel-default">
                                         <div class="panel-body">
-                                            Date<br/>
-                                            Comment.
+                                            <?php print $comment->getDate()->format('d/m/Y H:i:s'); ?><br/>
+                                            <?php print $comment->getMessage(); ?>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-push-2 col-sm-8">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
-                                            Date<br/>
-                                            Comment.
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-push-2 col-sm-8">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
-                                            Date<br/>
-                                            Comment.
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-push-2 col-sm-8">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
-                                            Date<br/>
-                                            Comment.
-                                        </div>
-                                    </div>
-                                </div>
+                                <?php endforeach; ?>
 
                                 <div class="col-sm-push-2 col-sm-8">
                                     <div class="well">
-                                        <form class="form-horizontal" role="form">
+                                        <form class="form-horizontal" role="form" method="POST" action="comment.php?id=<?php print $post->getId(); ?>">
                                             <h4>Commenter</h4>
                                             <div class="form-group" style="padding:14px;">
                                                 <textarea class="form-control" name="message" placeholder="Message"></textarea>
