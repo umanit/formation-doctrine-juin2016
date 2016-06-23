@@ -2,10 +2,23 @@
 
 require '../bootstrap.php';
 
+use Entity\Post;
+
+// Sauvegarde d'un nouveau post
+if (isset($_POST['title']) && isset($_POST['message'])) {
+    $post = new Post();
+    $post->setSubject($_POST['title']);
+    $post->setMessage($_POST['message']);
+    $post->setDate(new \DateTime());
+
+    $entityManager->persist($post);
+    // $entityManager->flush();   // Flush toute les entités gérées par doctrine
+    $entityManager->flush($post); // Flush uniquement la nouvelle entité
+}
+
 $posts = $entityManager->getRepository('Entity\Post')->findBy(array(), array('date' => 'DESC'));
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -66,7 +79,7 @@ $posts = $entityManager->getRepository('Entity\Post')->findBy(array(), array('da
                                 <!-- main col left -->
                                 <div class="col-sm-5">
                                     <div class="well">
-                                        <form class="form-horizontal" role="form">
+                                        <form class="form-horizontal" role="form" method="POST">
                                             <h4>What's New</h4>
                                             <div class="form-group" style="padding:14px;">
                                                 <input type="text" class="form-control" name="title" placeholder="Titre"/>
