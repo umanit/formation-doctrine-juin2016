@@ -3,6 +3,7 @@
 require '../bootstrap.php';
 
 use Entity\Post;
+use Entity\PostLike;
 
 // Sauvegarde d'un nouveau post
 if (isset($_POST['title']) && isset($_POST['message'])) {
@@ -10,6 +11,7 @@ if (isset($_POST['title']) && isset($_POST['message'])) {
     $post->setSubject($_POST['title']);
     $post->setMessage($_POST['message']);
     $post->setDate(new \DateTime());
+    $post->setAuthor($currentUser);
 
     $entityManager->persist($post);
     // $entityManager->flush();   // Flush toute les entités gérées par doctrine
@@ -19,7 +21,28 @@ if (isset($_POST['title']) && isset($_POST['message'])) {
 if (isset($_GET['search-word'])) {
     $posts = $entityManager->getRepository('Entity\Post')->getSubjectLike($_GET['search-word']);
 } else {
+    // avant
     $posts = $entityManager->getRepository('Entity\Post')->findBy(array(), array('date' => 'DESC'));
+
+    // Question 13
+    $posts = $entityManager->getRepository('Entity\Post')->getFriendsPosts($currentUser);
+}
+
+// Question 11
+// $_GET['post'] contient l'identifiant du post
+// $_GET['like'] contient 1 pour like, -1 pour dislike
+if (isset($_GET['like']) && isset($_GET['post'])) {
+    // Récupère le post
+    $postToLike = $entityManager->getRepository('Entity\Post')->find($_GET['post']);
+
+    // Crée le like
+    $postLike = new PostLike();
+    $postLike->setUser($currentUser);
+    $postLike->setPost($postToLike);
+    $postLike->setScore($_GET['like']); // Pour faire bien, il faudrait vérifier que la valeur est valide
+
+    $entityManager->persist($postLike);
+    $entityManager->flush($postLike);
 }
 
 ?>
@@ -100,8 +123,10 @@ if (isset($_GET['search-word'])) {
                                     <?php foreach($posts as $post): ?>
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
-                                            <a href="comment.php?id=<?php print $post->getId(); ?>" class="pull-right">Link</a>
-                                            <a href="edit_post.php?id=<?php print $post->getId(); ?>" class="pull-right">Edit</a>
+                                            <a href="comment.php?id=<?php print $post->getId(); ?>" class="pull-right"> / Link</a>
+                                            <a href="edit_post.php?id=<?php print $post->getId(); ?>" class="pull-right">Edit </a>
+                                            <a href="post.php?post=<?php print $post->getId(); ?>&like=1">Like</a> /
+                                            <a href="post.php?post=<?php print $post->getId(); ?>&like=-1">Dislike</a>
                                             <h4><?php print $post->getSubject(); ?></h4>
                                             <?php print $post->getDate()->format('d/m/Y H:i:s'); ?>
                                         </div>

@@ -3,6 +3,7 @@
 require '../bootstrap.php';
 
 use Entity\Comment;
+use Entity\CommentLike;
 
 $post = $entityManager->getRepository('Entity\Post')->find($_GET['id']);
 // $post = $entityManager->getRepository('Entity\Post')->findOneBy(array('id' => $_GET['id']));
@@ -13,13 +14,32 @@ if (isset($_POST['message'])) {
     $comment = new Comment();
     $comment->setDate(new \DateTime());
     $comment->setMessage($_POST['message']);
+    $comment->setAuthor($currentUser);
+    $comment->setPost($post);
 
     $entityManager->persist($comment);
     $entityManager->flush($comment);
 }
 
 // Récupération de tous les commentaires
-$comments = $entityManager->getRepository('Entity\Comment')->findBy(array(), array('date' => 'ASC'));
+$comments = $entityManager->getRepository('Entity\Comment')->findBy(array('post' => $post), array('date' => 'ASC'));
+
+// Question 11
+// $_GET['comment'] contient l'identifiant du comment
+// $_GET['like'] contient 1 pour like, -1 pour dislike
+if (isset($_GET['like']) && isset($_GET['comment'])) {
+    // Récupère le comment
+    $commentToLike = $entityManager->getRepository('Entity\Comment')->find($_GET['comment']);
+
+    // Crée le like
+    $commentLike = new CommentLike();
+    $commentLike->setUser($currentUser);
+    $commentLike->setComment($commentToLike);
+    $commentLike->setScore($_GET['like']); // Pour faire bien, il faudrait vérifier que la valeur est valide
+
+    $entityManager->persist($commentLike);
+    $entityManager->flush($commentLike);
+}
 
 ?>
 
@@ -98,6 +118,9 @@ $comments = $entityManager->getRepository('Entity\Comment')->findBy(array(), arr
                                         <div class="panel-body">
                                             <?php print $comment->getDate()->format('d/m/Y H:i:s'); ?><br/>
                                             <?php print $comment->getMessage(); ?>
+                                            <hr/>
+                                            <a href="comment.php?comment=<?php print $comment->getId(); ?>&like=1&id=<?php print $post->getId(); ?>">Like</a> /
+                                            <a href="comment.php?comment=<?php print $comment->getId(); ?>&like=-1&id=<?php print $post->getId(); ?>">Dislike</a>
                                         </div>
                                     </div>
                                 </div>

@@ -46,6 +46,16 @@ class User
     private $birthDate;
 
     /**
+     * Question 12
+     * @ManyToMany(targetEntity="Entity\User")
+     * @JoinTable(name="user_friends",
+     *      joinColumns={@JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="friend_user_id", referencedColumnName="id")}
+     *      )
+     */
+    private $friends;
+
+    /**
      * Get the value of Id
      *
      * @return mixed
@@ -210,6 +220,31 @@ class User
     public function setEmail($email)
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of Friends
+     *
+     * @return mixed
+     */
+    public function getFriends()
+    {
+        return $this->friends;
+    }
+
+    /**
+     * Set the value of Friends
+     *
+     * @param mixed $friends
+     *
+     * @return self
+     */
+    public function setFriends($friends)
+    {
+        $this->friends = $friends;
 
         return $this;
     }
