@@ -26,6 +26,18 @@ class Comment
     private $message;
 
     /**
+     * @ManyToOne(targetEntity="Entity\User")
+     * @JoinColumn(name="author_id", referencedColumnName="id")
+     */
+    private $author;
+
+    /**
+     * @ManyToOne(targetEntity="Entity\Post", inversedBy="comments")
+     * @JoinColumn(name="post_id", referencedColumnName="id")
+     */
+    private $post;
+
+    /**
      * Get the value of Id
      *
      * @return mixed
@@ -93,6 +105,55 @@ class Comment
     public function setMessage($message)
     {
         $this->message = $message;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of Author
+     *
+     * @return mixed
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * Set the value of Author
+     *
+     * @param mixed $author
+     *
+     * @return self
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of Post
+     *
+     * @return mixed
+     */
+    public function getPost()
+    {
+        return $this->post;
+    }
+
+    /**
+     * Set the value of Post
+     *
+     * @param mixed $post
+     *
+     * @return self
+     */
+    public function setPost($post)
+    {
+        $this->post = $post;
 
         return $this;
     }

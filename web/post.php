@@ -10,6 +10,7 @@ if (isset($_POST['title']) && isset($_POST['message'])) {
     $post->setSubject($_POST['title']);
     $post->setMessage($_POST['message']);
     $post->setDate(new \DateTime());
+    $post->setAuthor($currentUser);
 
     $entityManager->persist($post);
     // $entityManager->flush();   // Flush toute les entités gérées par doctrine

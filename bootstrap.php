@@ -7,7 +7,7 @@ use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 
 $paths = array("src/Entity");
-$isDevMode = false;
+$isDevMode = true; // Évite les erreurs "class not found /tmp/__CG_Proxy...."
 
 // the connection configuration
 $dbParams = array(

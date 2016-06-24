@@ -13,13 +13,19 @@ if (isset($_POST['message'])) {
     $comment = new Comment();
     $comment->setDate(new \DateTime());
     $comment->setMessage($_POST['message']);
+    $comment->setAuthor($currentUser);
+    $comment->setPost($post);
 
     $entityManager->persist($comment);
     $entityManager->flush($comment);
 }
 
 // Récupération de tous les commentaires
-$comments = $entityManager->getRepository('Entity\Comment')->findBy(array(), array('date' => 'ASC'));
+$comments = $entityManager->getRepository('Entity\Comment')->findBy(array('post' => $post), array('date' => 'ASC'));
+// $comments = $entityManager->getRepository('Entity\Comment')->findBy(array('post' => $post->getId()), array('date' => 'ASC'));
+// $comments = $entityManager->getRepository('Entity\Comment')->findBy(array('post' => $_GET['id']), array('date' => 'ASC'));
+
+// $comments = $post->getComments(); // Autre manière de faire, renvoie un tableau avec l'ensemble des objets crées et liés au $post
 
 ?>
 
