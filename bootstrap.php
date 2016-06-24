@@ -1,6 +1,7 @@
 <?php
 
 require_once "vendor/autoload.php";
+session_start();
 
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
@@ -18,3 +19,7 @@ $dbParams = array(
 
 $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
 $entityManager = EntityManager::create($dbParams, $config);
+
+if (isset($_SESSION['user'])) {
+    $currentUser = $entityManager->merge($_SESSION['user']);
+}

@@ -1,6 +1,9 @@
 <?php
 
 require '../bootstrap.php';
+// 
+// $user = new User();
+// $_SESSION['user'] = $user;
 
 $post = $entityManager->getRepository('Entity\Post')->find($_GET['id']);
 
